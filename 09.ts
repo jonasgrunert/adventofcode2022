@@ -1,4 +1,4 @@
-import Solution from "./_util.ts";
+import Solution from "./solution.ts";
 
 const task = new Solution(
   (arr: { direction: string; length: number }[]) => {

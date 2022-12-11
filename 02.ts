@@ -1,4 +1,4 @@
-import Solution from "./_util.ts";
+import Solution from "./solution.ts";
 
 const op1 = ["A", "B", "C"] as const;
 const op2 = ["X", "Y", "Z"] as const;

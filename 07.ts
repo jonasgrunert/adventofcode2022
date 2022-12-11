@@ -1,4 +1,4 @@
-import Solution from "./_util.ts";
+import Solution from "./solution.ts";
 
 class Directory {
   #parent: Directory | null = null;

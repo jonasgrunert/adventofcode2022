@@ -1,4 +1,4 @@
-import Solution from "./_util.ts";
+import Solution from "./solution.ts";
 
 const sort = (arr: number[][]) =>
   arr.map((v) => v.reduce((p, c) => p + c, 0)).sort((a, b) => b - a);
@@ -15,7 +15,5 @@ const task = new Solution(
   },
 );
 task.expect(24000, 45000);
-
-if (import.meta.main) await task.execute();
 
 export default task;
