@@ -1,4 +1,4 @@
-import Solution from "./_util.ts";
+import Solution from "./solution.ts";
 
 const marker = (n: number) => (arr: string[]) => {
   let s: string[] = [];
