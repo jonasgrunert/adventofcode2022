@@ -26,7 +26,7 @@ function getInput(n: string, second = false) {
     }
     return Deno.readTextFileSync(`data/${n}_test.txt`);
   } else {
-    if (Deno === undefined) {
+    if (globalThis.Deno === undefined) {
       return document.getElementById("input")!.value;
     }
     return Deno.readTextFileSync(`data/${n}.txt`);
