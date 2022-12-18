@@ -90,7 +90,7 @@ class Cave {
     for (let i = 0; i < 11; i++) {
       console.log(
         Object.entries(this.#filled)
-          .map(([n, s]) => (s.has(i) ? "x" : "."))
+          .map(([_n, s]) => (s.has(i) ? "x" : "."))
           .join(""),
       );
     }
