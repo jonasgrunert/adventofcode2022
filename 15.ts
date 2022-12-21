@@ -17,13 +17,14 @@ function distance([x1, y1]: [number, number], [x2, y2]: [number, number]) {
 function inY(y: number, entries: Entry[]) {
   const points = new Set<number>();
   let count = 0;
-  for (const { sx, sy, bx, by, dist } of entries) {
-    if (sy === y) points.add(sx);
-    if (by === y) points.add(bx);
-    for (let d = sx - dist; d <= sx + dist; d++) {
-      if (!points.has(d) && distance([sx, sy], [d, y]) <= dist) {
+  for (const { sx, sy, by, dist } of entries) {
+    if (sy === y) points.add(sy);
+    if (by === y) points.add(by);
+    const d = distance([sx, sy], [sx, y]);
+    for (let x = sx - (dist - d); x <= sx + (dist - d); x++) {
+      if (!points.has(x)) {
         count++;
-        points.add(d);
+        points.add(x);
       }
     }
   }
@@ -44,23 +45,25 @@ const task = new Solution(
     return inY(globalThis.isTest ? 10 : 2000000, entries);
   },
   (entries: Entry[]) => {
-    const check = hasSensorInDistance(entries);
+    const acoeffs = new Set<number>();
+    const bcoeffs = new Set<number>();
     for (const { sx, sy, dist } of entries) {
-      for (let d = 0; d <= dist + 1; d++) {
-        for (const xsign of [-1, 1]) {
-          for (const ysign of [-1, 1]) {
-            const x = sx + d * xsign;
-            const y = sy + (dist + 1 - d) * ysign;
-            if (
-              x >= 0 &&
-              y >= 0 &&
-              x <= (globalThis.isTest ? 20 : 4000000) &&
-              y <= (globalThis.isTest ? 20 : 4000000) &&
-              check(x, y)
-            ) {
-              return 4000000 * x + y;
-            }
-          }
+      acoeffs.add(sy - sx + dist + 1);
+      acoeffs.add(sy - sx - dist - 1);
+      bcoeffs.add(sx + sy + dist + 1);
+      bcoeffs.add(sx + sy - dist - +1);
+    }
+    for (const a of acoeffs) {
+      for (const b of bcoeffs) {
+        const p = [Math.floor((b - a) / 2), Math.floor((a + b) / 2)] as [
+          number,
+          number,
+        ];
+        if (
+          p.every((c) => 0 < c && c < (globalThis.isTest ? 20 : 4000000)) &&
+          entries.every(({ dist, sx, sy }) => distance([sx, sy], p) > dist)
+        ) {
+          return 4000000 * p[0] + p[1];
         }
       }
     }
