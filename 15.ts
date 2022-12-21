@@ -31,15 +31,6 @@ function inY(y: number, entries: Entry[]) {
   return count;
 }
 
-function hasSensorInDistance(entries: Entry[]) {
-  return (x: number, y: number) => {
-    for (const { sx, sy, dist } of entries) {
-      if (distance([sx, sy], [x, y]) <= dist) return false;
-    }
-    return true;
-  };
-}
-
 const task = new Solution(
   (entries: Entry[]) => {
     return inY(globalThis.isTest ? 10 : 2000000, entries);

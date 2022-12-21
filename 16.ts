@@ -46,10 +46,6 @@ class Cache {
     return this.#map.get(key) ?? 0;
   }
 
-  max() {
-    return [...this.#map].sort(([, v1], [, v2]) => v2 - v1)[0][1];
-  }
-
   team() {
     const arr = [...this.#map].sort(([, v1], [, v2]) => v2 - v1);
     let best = 0;
@@ -60,17 +56,15 @@ class Cache {
           break;
         }
       }
+      if (arr[i][1] < best / 2) {
+        break;
+      }
     }
     return best;
   }
 }
 
-function dfs(
-  start: Valve,
-  time: number,
-  matrix: Map<string, Valve>,
-  second = false,
-): number {
+function dfs2(start: Valve, time: number, matrix: Map<string, Valve>): number {
   const cache = new Cache();
   function calc(from: Valve, minutes: number, visited: Set<string>): void {
     for (const [name, valve] of matrix) {
@@ -92,8 +86,39 @@ function dfs(
     }
   }
   calc(start, 0, new Set());
-  if (!second) return cache.max();
   return cache.team();
+}
+
+function takeOne(matrix: Map<string, Valve>): [Valve, Map<string, Valve>][] {
+  return [...matrix].map(([_, start], i, all) => [
+    start,
+    new Map([...all].filter((_, x) => i !== x)),
+  ]);
+}
+
+function dfs1(start: Valve, time: number, matrix: Map<string, Valve>): number {
+  const cache = new Map<string, number>();
+  function calc(
+    start: Valve,
+    minutes: number,
+    matrix: Map<string, Valve>,
+  ): number {
+    const key = [start.name, minutes, [...matrix.keys()].join("_")].join(",");
+    if (cache.has(key)) return cache.get(key)!;
+    if (minutes === 0) {
+      return 0;
+    }
+    const val = start.value * (minutes - 1);
+    const newValue = Math.max(
+      val,
+      ...takeOne(matrix)
+        .filter(([v]) => start.pathTo(v.name) < minutes)
+        .map(([v, m]) => val + calc(v, minutes - start.pathTo(v.name) - 1, m)),
+    );
+    cache.set(key, newValue);
+    return newValue;
+  }
+  return calc(start, time + 1, matrix);
 }
 
 function doSetIntersect(a: string, b: string) {
@@ -143,13 +168,13 @@ const task = new Solution(
     const [start, valves] = findShortestPaths(
       new Map(entries.map((v) => [v.name, v])),
     );
-    return dfs(start, 30, valves);
+    return dfs1(start, 30, valves);
   },
   (entries: Valve[]) => {
     const [start, valves] = findShortestPaths(
       new Map(entries.map((v) => [v.name, v])),
     );
-    return dfs(start, 26, valves, true);
+    return dfs2(start, 26, valves);
   },
   {
     transform: (a) => new Valve(a),
