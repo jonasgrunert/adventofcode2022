@@ -109,7 +109,7 @@ const task = new Solution(
     sep: "\n",
   },
 );
-task.expect(33, 56 * 62);
+task.expect(33 /*,56 * 62*/);
 
 if (import.meta.main) await task.execute();
 
