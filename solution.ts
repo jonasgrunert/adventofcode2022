@@ -9,7 +9,12 @@ declare global {
   };
 }
 
-type Reporter<O> = (name: string, result: O, expected?: O) => void;
+type Reporter<O> = (
+  name: string,
+  result: O,
+  expected?: O,
+  time?: number,
+) => void;
 type TaskFunction<T, O> = (data: T[]) => O;
 type ReadOpts<T> = {
   transform?: (value: string, index: number, array: string[]) => T;
@@ -91,18 +96,18 @@ class Solution<T, O1, O2 = O1> {
 
   execute() {
     if (this.#r1 !== undefined) {
-      this.#reporter(
-        `Day ${this.#filename} - Task 1`,
-        this.result1(this.prepare(getInput(this.#filename))),
-        this.#r1,
-      );
+      const input = getInput(this.#filename);
+      const time = Date.now();
+      const result = this.result1(this.prepare(input));
+      const dur = Date.now() - time;
+      this.#reporter(`Day ${this.#filename} - Task 1`, result, this.#r1, dur);
     }
     if (this.#r2 !== undefined) {
-      this.#reporter(
-        `Day ${this.#filename} - Task 2`,
-        this.result2(this.prepare(getInput(this.#filename, true))),
-        this.#r2,
-      );
+      const input = getInput(this.#filename, true);
+      const time = Date.now();
+      const result = this.result2(this.prepare(input));
+      const dur = Date.now() - time;
+      this.#reporter(`Day ${this.#filename} - Task 2`, result, this.#r2, dur);
     }
   }
 

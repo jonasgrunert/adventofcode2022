@@ -5,11 +5,11 @@ for await (const file of Deno.readDir(".")) {
     const { default: sol }: { default: Solution<unknown, unknown> } =
       await import(`./${file.name}`);
     sol.filename = file.name;
-    sol.reporter = (name, result) =>
+    sol.reporter = (name, result, _, time) =>
       console.log(
         `${name}: ${
           typeof result === "string" ? result : Deno.inspect(result)
-        }`,
+        } (${time} ms)`,
       );
     sol.execute();
   }
