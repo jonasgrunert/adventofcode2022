@@ -88,7 +88,7 @@
       for (const [id, value] of params) {
         document.getElementById(id).value = value;
       }
-      fetchCode(params.get("task"));
+      fetchCode(params.get("task") ?? "01");
     </script>
     <script type="module">
       const form = document.getElementById("form");
