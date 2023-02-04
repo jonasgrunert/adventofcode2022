@@ -13,6 +13,15 @@ for await (const file of Deno.readDir(".")) {
     const { default: sol }: { default: Solution<unknown, unknown> } =
       await import(`./${file.name}`);
     sol.filename = file.name;
+    sol.reader = (name, second) => {
+      if (second) {
+        try {
+          return Deno.readTextFileSync(`data/${name}_test2.txt`);
+          // deno-lint-ignore no-empty
+        } catch {}
+      }
+      return Deno.readTextFileSync(`data/${name}_test.txt`);
+    };
     sol.reporter = (name, result, expect) =>
       Deno.test(name, () => {
         assertEquals(result, expect);

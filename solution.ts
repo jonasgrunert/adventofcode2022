@@ -15,28 +15,12 @@ type Reporter<O> = (
   expected?: O,
   time?: number,
 ) => void;
+type InputReader = (filename: string, second?: boolean) => string;
 type TaskFunction<T, O> = (data: T[]) => O;
 type ReadOpts<T> = {
   transform?: (value: string, index: number, array: string[]) => T;
   sep?: string | RegExp;
 };
-
-function getInput(n: string, second = false) {
-  if (globalThis.isTest) {
-    if (second) {
-      try {
-        return Deno.readTextFileSync(`data/${n}_test2.txt`);
-        // deno-lint-ignore no-empty
-      } catch {}
-    }
-    return Deno.readTextFileSync(`data/${n}_test.txt`);
-  } else {
-    if (globalThis.Deno === undefined) {
-      return document.getElementById("input")!.value;
-    }
-    return Deno.readTextFileSync(`data/${n}.txt`);
-  }
-}
 
 const DefaultImplementation = () => {
   throw new Error("Not implemented");
@@ -48,6 +32,7 @@ class Solution<T, O1, O2 = O1> {
   #opts: Required<ReadOpts<T>>;
   #filename = "Unkown";
   #reporter: Reporter<O1 | O2> = DefaultImplementation;
+  #reader: InputReader = DefaultImplementation;
   #r1?: O1;
   #r2?: O2;
 
@@ -95,15 +80,14 @@ class Solution<T, O1, O2 = O1> {
   }
 
   execute() {
+    const input = this.#reader(this.#filename);
     if (this.#r1 !== undefined) {
-      const input = getInput(this.#filename);
       const time = Date.now();
       const result = this.result1(this.prepare(input));
       const dur = Date.now() - time;
       this.#reporter(`Day ${this.#filename} - Task 1`, result, this.#r1, dur);
     }
     if (this.#r2 !== undefined) {
-      const input = getInput(this.#filename, true);
       const time = Date.now();
       const result = this.result2(this.prepare(input));
       const dur = Date.now() - time;
@@ -112,11 +96,15 @@ class Solution<T, O1, O2 = O1> {
   }
 
   set filename(name: string) {
-    this.#filename = name.match(/(?<num>\d{2}).ts/)?.groups?.num ?? "Unknown";
+    this.#filename = name.match(/(?<num>\d{2}).ts/)?.groups?.num ?? name;
   }
 
   set reporter(report: Reporter<O1 | O2>) {
     this.#reporter = report;
+  }
+
+  set reader(read: InputReader) {
+    this.#reader = read;
   }
 }
 

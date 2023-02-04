@@ -5,6 +5,7 @@ for await (const file of Deno.readDir(".")) {
     const { default: sol }: { default: Solution<unknown, unknown> } =
       await import(`./${file.name}`);
     sol.filename = file.name;
+    sol.reader = (n) => Deno.readTextFileSync(`data/${n}.txt`);
     sol.reporter = (name, result, _, time) =>
       console.log(
         `${name}: ${
