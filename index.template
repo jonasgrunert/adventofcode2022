@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Advent of Code 2022 Solutions in Typescript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      async
+      defer
+      data-website-id="{{#UMAMI_KEY}}"
+      src="{{#UMAMI_URL}}"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <style>
+      pre {
+        background: inherit !important;
+      }
+      code {
+        background: var(--background) !important;
+      }
+      .task {
+        display: flex;
+        justify-content: space-between;
+      }
+      .task > div {
+        flex: 1;
+        padding: 0 0.5em;
+      }
+      #error:not(:empty) {
+        background-color: var(--highlight);
+        color: var(--background);
+        margin: 1em;
+        padding: 10px;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <div class="task">
+        <div>
+          <label for="task">Task</label>
+          <select name="task" id="task">
+            {{#options}}
+          </select>
+        </div>
+        <button id="exec" type="submit">Execute</button>
+      </div>
+      <div class="task">
+        <div>
+          <label for="input">Input</label>
+          <textarea name="input" id="input" rows="16"></textarea>
+        </div>
+        <div>
+          <label for="output-1">Result Task 1</label>
+          <textarea name="output-1" id="output-1" readonly></textarea>
+          <label for="output-2">Result Task 2</label>
+          <textarea name="output-2" id="output-2" readonly></textarea>
+        </div>
+      </div>
+    </form>
+    <div id="error"></div>
+    <pre>
+      <code class="language-ts" id="code">
+      </code>
+    </pre>
+    <script>
+      function fetchCode(name) {
+        fetch(`/${name}.ts`)
+          .then((r) => r.text())
+          .then((t) => {
+            document.getElementById("code").innerHTML = t;
+            Prism.highlightAll();
+          });
+        fetch(`/data/${name}_test.txt`)
+          .then((r) => r.text())
+          .then((t) => {
+            document.getElementById("input").value = t;
+          });
+      }
+      const params = new URLSearchParams(window.location.search);
+      for (const [id, value] of params) {
+        document.getElementById(id).value = value;
+      }
+      fetchCode(params.get("task"));
+    </script>
+    <script type="module">
+      const form = document.getElementById("form");
+      document.getElementById("task").addEventListener("change", (evt) => {
+        fetchCode(evt.target.value);
+      });
+      form.addEventListener("change", (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        window.history.pushState(
+          {},
+          "",
+          `?${new URLSearchParams(new FormData(evt.currentTarget)).toString()}`,
+        );
+      });
+      const worker = new Worker("worker.js", { type: "module" });
+      worker.onmessage = (message) => {
+        if (message.data.success) {
+          document.getElementById(
+            `output-${message.data.name.slice(-1)}`,
+          ).value = message.data.result;
+        } else {
+          displayError(
+            `We encountered an error while executing the worker: ${message.data.error.message}`,
+          );
+        }
+      };
+      function displayError(message) {
+        document.getElementById("error").innerHTML = message;
+      }
+      worker.onerror = (event) =>
+        displayError(
+          `We encountered an error with the worker: ${error.message}`,
+        );
+      worker.onmessageerror = (event) =>
+        displayError(
+          `We encountered an error with the message between us: ${error.message}`,
+        );
+      form.addEventListener("submit", (evt) => {
+        evt.preventDefault();
+        const data = new FormData(evt.currentTarget);
+        worker.postMessage({
+          task: data.get("task"),
+          input: data.get("input"),
+        });
+      });
+    </script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+  </body>
+</html>
