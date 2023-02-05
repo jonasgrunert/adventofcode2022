@@ -27,11 +27,11 @@
         color: var(--text-bright);
       }
       pre {
-        margin: 4px auto;
+        margin: 2px auto;
       }
       pre > code {
         overflow-x: initial;
-        padding-bottom: 0;
+        padding: 0;
       }
       pre {
         background: var(--background) !important;
