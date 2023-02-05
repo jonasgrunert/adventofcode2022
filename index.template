@@ -155,6 +155,7 @@
       form.addEventListener("change", (evt) => {
         evt.preventDefault();
         evt.stopPropagation();
+        document.getElementById("error").innerHTML = "";
         window.history.pushState(
           {},
           "",
@@ -166,11 +167,12 @@
         if (message.data.success) {
           const part = message.data.name.slice(-1);
           document.getElementById(`output-${part}`).value = message.data.result;
-          if (part === "2") {
-            const btn = document.getElementById("exec");
-            btn.removeAttribute("disabled");
-            btn.innerHTML = `Execute`;
-          }
+          document.querySelector(
+            `[for=output-${part}`,
+          ).innerHTML = `Result Task ${part} (${message.data.time}ms)`;
+          const btn = document.getElementById("exec");
+          btn.removeAttribute("disabled");
+          btn.innerHTML = `Execute`;
         } else {
           displayError(
             `We encountered an error while executing the worker: ${message.data.error.message}`,
@@ -179,6 +181,9 @@
       };
       function displayError(message) {
         document.getElementById("error").innerHTML = message;
+        const btn = document.getElementById("exec");
+        btn.removeAttribute("disabled");
+        btn.innerHTML = `Execute`;
       }
       worker.onerror = (event) =>
         displayError(
