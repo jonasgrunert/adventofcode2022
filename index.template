@@ -24,12 +24,13 @@
     <style>
       .line-numbers .line-numbers-rows {
         top: 10px;
+        color: var(--text-bright);
       }
       pre > code {
         overflow-x: initial;
       }
       pre {
-        background: inherit !important;
+        background: var(--background) !important;
       }
       code {
         background: var(--background) !important;
