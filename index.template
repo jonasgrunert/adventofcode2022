@@ -22,6 +22,12 @@
       href="https://unpkg.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
     />
     <style>
+      .line-numbers .line-numbers-rows {
+        top: 10px;
+      }
+      pre > code {
+        overflow-x: initial;
+      }
       pre {
         background: inherit !important;
       }
@@ -132,8 +138,8 @@
       </div>
     </form>
     <div id="error"></div>
-    <pre class="line-numbers">
-      <code class="language-ts" id="code">
+    <pre class="line-numbers language-ts">
+      <code id="code">
       </code>
     </pre>
     <footer>
