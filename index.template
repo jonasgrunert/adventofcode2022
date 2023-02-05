@@ -26,6 +26,9 @@
         top: 10px;
         color: var(--text-bright);
       }
+      pre {
+        margin: 4px auto;
+      }
       pre > code {
         overflow-x: initial;
       }
