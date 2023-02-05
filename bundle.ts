@@ -4,6 +4,7 @@ await esbuild.build({
   entryPoints: [...Deno.readDirSync(".")]
     .map((f) => f.name)
     .filter((f) => /\d{2}\.ts/.test(f)),
+  inject: ["./polyfill.js"],
   bundle: true,
   splitting: true,
   minify: true,
