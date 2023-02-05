@@ -31,6 +31,7 @@
       }
       pre > code {
         overflow-x: initial;
+        padding-bottom: 0;
       }
       pre {
         background: var(--background) !important;
