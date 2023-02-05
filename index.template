@@ -17,6 +17,10 @@
       rel="stylesheet"
       href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
+    />
     <style>
       pre {
         background: inherit !important;
@@ -45,6 +49,11 @@
         margin: 1em;
         padding: 10px;
         border-radius: 6px;
+      }
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .loader {
         background: var(--text-bright);
@@ -123,10 +132,17 @@
       </div>
     </form>
     <div id="error"></div>
-    <pre>
+    <pre class="line-numbers">
       <code class="language-ts" id="code">
       </code>
     </pre>
+    <footer>
+      <p>
+        Made with ❤ in Berlin by
+        <a href="https://jonas.grunert.berlin">Jonas Grunert</a> in 2022.
+        <a href="https://github.com/jonasgrunert/adventofcode2022">Source</a>
+      </p>
+    </footer>
     <script>
       function fetchCode(name) {
         fetch(`/${name}.ts`)
@@ -206,6 +222,7 @@
       });
     </script>
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-clike.min.js"></script>
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-javascript.min.js"></script>
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-typescript.min.js"></script>
