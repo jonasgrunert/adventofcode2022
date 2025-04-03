@@ -32,17 +32,17 @@ const task = new Solution(
     for (const cmd of arr) {
       if (cmd[0] === "noop") {
         pixels.push(
-          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : ".",
+          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : "."
         );
         cycle++;
         if (cycle === 8) console.log();
       } else {
         pixels.push(
-          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : ".",
+          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : "."
         );
         cycle++;
         pixels.push(
-          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : ".",
+          cycle % 40 >= state - 1 && cycle % 40 <= state + 1 ? "#" : "."
         );
         cycle++;
         state += cmd[1] as number;
@@ -58,7 +58,7 @@ const task = new Solution(
     transform: (a) =>
       a.split(" ").map((n, i) => (i === 1 ? Number.parseInt(n) : n)),
     sep: "\n",
-  },
+  }
 );
 task.expect(
   13140,
@@ -68,9 +68,7 @@ task.expect(
 ####....####....####....####....####....
 #####.....#####.....#####.....#####.....
 ######......######......######......####
-#######.......#######.......#######.....`,
+#######.......#######.......#######.....`
 );
-
-if (import.meta.main) await task.execute();
 
 export default task;

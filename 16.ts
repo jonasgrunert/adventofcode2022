@@ -3,7 +3,7 @@ import Solution from "./solution.ts";
 const regEx = /Valve (\w{2}).*rate=(-?\d+);.*valves? (.*)/;
 
 function findShortestPaths(
-  valves: Map<string, Valve>,
+  valves: Map<string, Valve>
 ): [Valve, Map<string, Valve>] {
   const nodes = new Set([...valves.values()]);
   for (const k of nodes) {
@@ -101,7 +101,7 @@ function dfs1(start: Valve, time: number, matrix: Map<string, Valve>): number {
   function calc(
     start: Valve,
     minutes: number,
-    matrix: Map<string, Valve>,
+    matrix: Map<string, Valve>
   ): number {
     const key = [start.name, minutes, [...matrix.keys()].join("_")].join(",");
     if (cache.has(key)) return cache.get(key)!;
@@ -113,7 +113,7 @@ function dfs1(start: Valve, time: number, matrix: Map<string, Valve>): number {
       val,
       ...takeOne(matrix)
         .filter(([v]) => start.pathTo(v.name) < minutes)
-        .map(([v, m]) => val + calc(v, minutes - start.pathTo(v.name) - 1, m)),
+        .map(([v, m]) => val + calc(v, minutes - start.pathTo(v.name) - 1, m))
     );
     cache.set(key, newValue);
     return newValue;
@@ -166,23 +166,21 @@ class Valve {
 const task = new Solution(
   (entries: Valve[]) => {
     const [start, valves] = findShortestPaths(
-      new Map(entries.map((v) => [v.name, v])),
+      new Map(entries.map((v) => [v.name, v]))
     );
     return dfs1(start, 30, valves);
   },
   (entries: Valve[]) => {
     const [start, valves] = findShortestPaths(
-      new Map(entries.map((v) => [v.name, v])),
+      new Map(entries.map((v) => [v.name, v]))
     );
     return dfs2(start, 26, valves);
   },
   {
     transform: (a) => new Valve(a),
     sep: "\n",
-  },
+  }
 );
 task.expect(1651, 1707);
-
-if (import.meta.main) await task.execute();
 
 export default task;

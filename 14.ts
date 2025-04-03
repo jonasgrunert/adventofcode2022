@@ -7,7 +7,7 @@ class Cave {
   constructor(rocks: [number, number][][]) {
     for (const r of rocks) this.addRocks(r);
     this.#lowest = Math.max(
-      ...Object.values(this.#filled).flatMap((s) => [...s]),
+      ...Object.values(this.#filled).flatMap((s) => [...s])
     );
   }
 
@@ -91,7 +91,7 @@ class Cave {
       console.log(
         Object.entries(this.#filled)
           .map(([_n, s]) => (s.has(i) ? "x" : "."))
-          .join(""),
+          .join("")
       );
     }
   }
@@ -119,14 +119,11 @@ const task = new Solution(
       a
         .split(" -> ")
         .map(
-          (s) =>
-            s.split(",").map((n) => Number.parseInt(n)) as [number, number],
+          (s) => s.split(",").map((n) => Number.parseInt(n)) as [number, number]
         ),
     sep: "\n",
-  },
+  }
 );
 task.expect(24, 93);
-
-if (import.meta.main) await task.execute();
 
 export default task;

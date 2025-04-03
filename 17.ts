@@ -4,15 +4,15 @@ const stones = ["-", "+", "⅃", "|", "■"] as const;
 
 class Rock {
   #formation: number[][];
-  #type: typeof stones[number];
+  #type: (typeof stones)[number];
   static #i = 0;
 
-  constructor(shape: typeof stones[number], y = Number.MAX_SAFE_INTEGER) {
+  constructor(shape: (typeof stones)[number], y = Number.MAX_SAFE_INTEGER) {
     this.#type = shape;
     switch (shape) {
       case "-": {
         this.#formation = Array.from({ length: 7 }, (_, i) =>
-          i > 1 && i < 6 ? [y] : [],
+          i > 1 && i < 6 ? [y] : []
         );
         break;
       }
@@ -34,13 +34,13 @@ class Rock {
       }
       case "|": {
         this.#formation = Array.from({ length: 7 }, (_, i) =>
-          i === 2 ? [y, y + 1, y + 2, y + 3] : [],
+          i === 2 ? [y, y + 1, y + 2, y + 3] : []
         );
         break;
       }
       case "■": {
         this.#formation = Array.from({ length: 7 }, (_, i) =>
-          i > 1 && i < 4 ? [y, y + 1] : [],
+          i > 1 && i < 4 ? [y, y + 1] : []
         );
         break;
       }
@@ -64,9 +64,9 @@ class Rock {
       .reduce(
         (prev, curr) =>
           prev.concat(
-            curr.filter(({ y }) => !prev.some(({ y: py }) => py === y)),
+            curr.filter(({ y }) => !prev.some(({ y: py }) => py === y))
           ),
-        [],
+        []
       );
   }
 
@@ -77,9 +77,9 @@ class Rock {
       .reduceRight(
         (prev, curr) =>
           prev.concat(
-            curr.filter(({ y }) => !prev.some(({ y: py }) => py === y)),
+            curr.filter(({ y }) => !prev.some(({ y: py }) => py === y))
           ),
-        [],
+        []
       );
   }
 
@@ -200,7 +200,5 @@ const task = new Solution(simulate(2022), simulate(1000000000000), {
   sep: "",
 });
 task.expect(3068, 1514285714288);
-
-if (import.meta.main) await task.execute();
 
 export default task;

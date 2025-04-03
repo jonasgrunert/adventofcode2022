@@ -13,6 +13,4 @@ const marker = (n: number) => (arr: string[]) => {
 const task = new Solution(marker(4), marker(14));
 task.expect(7, 19);
 
-if (import.meta.main) await task.execute();
-
 export default task;

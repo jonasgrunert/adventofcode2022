@@ -24,10 +24,8 @@ const task = new Solution(
   },
   {
     sep: "\n",
-  },
+  }
 );
 task.expect("2=-1=0");
-
-if (import.meta.main) await task.execute();
 
 export default task;

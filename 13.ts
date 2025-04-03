@@ -38,7 +38,7 @@ function compare(left: number | List, right: number | List): number {
   }
   return compare(
     typeof left === "number" ? [left] : left,
-    typeof right === "number" ? [right] : right,
+    typeof right === "number" ? [right] : right
   );
 }
 
@@ -57,10 +57,8 @@ const task = new Solution(
   {
     transform: (a) => parse(a) as [List, List],
     sep: "\n\n",
-  },
+  }
 );
 task.expect(13, 140);
-
-if (import.meta.main) await task.execute();
 
 export default task;

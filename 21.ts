@@ -23,7 +23,7 @@ function solve1(map: Map<string, number | string[]>, name: string): number {
 
 function solve2(
   map: Map<string, number | string[] | [number, number]>,
-  name: string,
+  name: string
 ): [number, number] | number {
   const n = map.get(name)!;
   if (typeof n === "number") return n;
@@ -91,10 +91,8 @@ const task = new Solution(
       return [c[1], value] as Op;
     },
     sep: "\n",
-  },
+  }
 );
 task.expect(152, 301);
-
-if (import.meta.main) await task.execute();
 
 export default task;

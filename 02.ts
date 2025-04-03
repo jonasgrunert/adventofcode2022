@@ -3,7 +3,7 @@ import Solution from "./solution.ts";
 const op1 = ["A", "B", "C"] as const;
 const op2 = ["X", "Y", "Z"] as const;
 
-type Tuple = [typeof op1[number], typeof op2[number]];
+type Tuple = [(typeof op1)[number], (typeof op2)[number]];
 
 const score = ([a, b]: Tuple) => {
   const i = op1.indexOf(a);
@@ -29,10 +29,8 @@ const task = new Solution(
   {
     transform: (a) => a.split(" ") as Tuple,
     sep: "\n",
-  },
+  }
 );
 task.expect(15, 12);
-
-if (import.meta.main) await task.execute();
 
 export default task;

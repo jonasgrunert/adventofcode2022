@@ -31,7 +31,7 @@ function assemble(blueprint: Blueprint, time: number) {
     return materials[3];
   }
   const maxNeeded = Array.from({ length: 4 }, (_, i) =>
-    Math.max(...blueprint.map((a) => a[i])),
+    Math.max(...blueprint.map((a) => a[i]))
   );
   maxNeeded[3] = Number.MAX_SAFE_INTEGER;
   const init: State = {
@@ -60,7 +60,7 @@ function assemble(blueprint: Blueprint, time: number) {
           time: state.time + 1,
           robots: state.robots.map((r, j) => (j === i ? r + 1 : r)) as Tuple,
           materials: state.materials.map(
-            (v, j) => v + state.robots[j] - blueprint[i][j],
+            (v, j) => v + state.robots[j] - blueprint[i][j]
           ) as Tuple,
         };
         stack.push(nextState);
@@ -69,7 +69,7 @@ function assemble(blueprint: Blueprint, time: number) {
           time: state.time + 1,
           robots: [...state.robots] as Tuple,
           materials: state.materials.map(
-            (v, j) => v + state.robots[j],
+            (v, j) => v + state.robots[j]
           ) as Tuple,
         };
         stack.push(nextState);
@@ -107,10 +107,8 @@ const task = new Solution(
       ] as Blueprint;
     },
     sep: "\n",
-  },
+  }
 );
 task.expect(33 /*,56 * 62*/);
-
-if (import.meta.main) await task.execute();
 
 export default task;

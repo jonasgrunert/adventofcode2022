@@ -115,7 +115,7 @@ const task = new Solution(
               ...itemRegex
                 .exec(arr[i])![1]
                 .split(", ")
-                .map((n) => Number.parseInt(n)),
+                .map((n) => Number.parseInt(n))
             );
             break;
           }
@@ -142,10 +142,8 @@ const task = new Solution(
       return new Monkey(items, op, test);
     },
     sep: "\n\n",
-  },
+  }
 );
 task.expect(10605, 2713310158);
-
-if (import.meta.main) await task.execute();
 
 export default task;

@@ -96,10 +96,8 @@ const task = new Solution(
   {
     transform: (cmd) => cmd.replace("$ ", ""),
     sep: /[\n^]\$ /,
-  },
+  }
 );
 task.expect(95437, 24933642);
-
-if (import.meta.main) await task.execute();
 
 export default task;

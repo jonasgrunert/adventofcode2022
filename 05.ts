@@ -13,7 +13,7 @@ const arrange = (port: Port, move: number[]) => {
 
 const upgrade = (port: Port, move: number[]) => {
   port[move[2] - 1].push(
-    ...port[move[1] - 1].splice(port[move[1] - 1].length - move[0], move[0]),
+    ...port[move[1] - 1].splice(port[move[1] - 1].length - move[0], move[0])
   );
   return port;
 };
@@ -38,7 +38,7 @@ const task = new Solution(predict(arrange), predict(upgrade), {
           floors
             .map((f) => f.at(i)!)
             .filter((f) => f !== " ")
-            .sort(() => -1),
+            .sort(() => -1)
         );
       }
       return stacks;
@@ -48,7 +48,5 @@ const task = new Solution(predict(arrange), predict(upgrade), {
   sep: "\n\n",
 });
 task.expect("CMZ", "MCD");
-
-if (import.meta.main) await task.execute();
 
 export default task;

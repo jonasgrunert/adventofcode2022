@@ -70,7 +70,7 @@ function findPath(input: string[], amount: number) {
   let visited = new Set([start]);
   let count = 0;
   const targets = Array.from({ length: amount }, (_, i) =>
-    i % 2 === 0 ? end : start,
+    i % 2 === 0 ? end : start
   );
   while (targets.length !== 0) {
     const newPoints = new Set<string>();
@@ -127,10 +127,8 @@ const task = new Solution(
   },
   {
     sep: "\n",
-  },
+  }
 );
 task.expect(18, 54);
-
-if (import.meta.main) await task.execute();
 
 export default task;

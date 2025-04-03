@@ -48,7 +48,7 @@ const task = new Solution(
       for (const b of bcoeffs) {
         const p = [Math.floor((b - a) / 2), Math.floor((a + b) / 2)] as [
           number,
-          number,
+          number
         ];
         if (
           p.every((c) => 0 < c && c < (globalThis.isTest ? 20 : 4000000)) &&
@@ -68,10 +68,8 @@ const task = new Solution(
       return { sx, sy, bx, by, dist: distance([sx, sy], [bx, by]) };
     },
     sep: "\n",
-  },
+  }
 );
 task.expect(26, 56000011);
-
-if (import.meta.main) await task.execute();
 
 export default task;

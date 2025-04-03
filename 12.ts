@@ -103,10 +103,8 @@ const task = new Solution(
   {
     transform: (a, y) => a.split("").map((s, x) => new Point(s, x, y)),
     sep: "\n",
-  },
+  }
 );
 task.expect(31, 29);
-
-if (import.meta.main) await task.execute();
 
 export default task;

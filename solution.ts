@@ -11,7 +11,7 @@ declare global {
 
 type Reporter<O> = (
   name: string,
-  result: O,
+  result: O | NotImplementedError | InputMissingError,
   expected?: O,
   time?: number,
 ) => void;
@@ -22,8 +22,11 @@ type ReadOpts<T> = {
   sep?: string | RegExp;
 };
 
+export class NotImplementedError extends Error {}
+export class InputMissingError extends Error {}
+
 const DefaultImplementation = () => {
-  throw new Error("Not implemented");
+  throw new NotImplementedError();
 };
 
 class Solution<T, O1, O2 = O1> {
@@ -39,23 +42,19 @@ class Solution<T, O1, O2 = O1> {
   constructor(
     task1: TaskFunction<T, O1>,
     task2: TaskFunction<T, O2> | ReadOpts<T> = {
-      transform: (data) => <T>(<unknown>data),
+      transform: (data) => <T> (<unknown> data),
       sep: "\n",
     },
     opts: ReadOpts<T> = {
-      transform: (data) => <T>(<unknown>data),
+      transform: (data) => <T> (<unknown> data),
       sep: "\n",
     },
   ) {
     this.#t1 = task1;
-    if (typeof task2 === "function") {
-      this.#t2 = task2;
-    } else {
-      this.#t2 = DefaultImplementation;
-    }
+    this.#t2 = typeof task2 === "function" ? task2 : DefaultImplementation;
     this.#opts = Object.assign(
       {
-        transform: (data: string) => <T>data,
+        transform: (data: string) => <T> data,
         sep: "\n",
       },
       typeof task2 === "function" ? opts : task2,
@@ -80,18 +79,50 @@ class Solution<T, O1, O2 = O1> {
   }
 
   execute() {
-    const input = this.#reader(this.#filename);
-    if (this.#r1 !== undefined) {
-      const time = Date.now();
-      const result = this.result1(this.prepare(input));
-      const dur = Date.now() - time;
-      this.#reporter(`Day ${this.#filename} - Task 1`, result, this.#r1, dur);
+    try {
+      const input = this.#reader(this.#filename);
+      if (this.#r1 !== undefined) {
+        const time = Date.now();
+        const result = this.result1(this.prepare(input));
+        const dur = Date.now() - time;
+        this.#reporter(`Day ${this.#filename} - Task 1`, result, this.#r1, dur);
+      }
+    } catch (err: unknown) {
+      if (
+        err instanceof NotImplementedError || err instanceof InputMissingError
+      ) {
+        this.#reporter(
+          `Day ${this.#filename} - Task 1`,
+          err,
+        );
+      } else {
+        throw err;
+      }
     }
-    if (this.#r2 !== undefined) {
-      const time = Date.now();
-      const result = this.result2(this.prepare(input));
-      const dur = Date.now() - time;
-      this.#reporter(`Day ${this.#filename} - Task 2`, result, this.#r2, dur);
+    try {
+      const input2 = this.#reader(this.#filename, true);
+      if (this.#r2 !== undefined) {
+        const time = Date.now();
+        const result = this.result2(this.prepare(input2));
+        const dur = Date.now() - time;
+        this.#reporter(
+          `Day ${this.#filename} - Task 2`,
+          result,
+          this.#r2,
+          dur,
+        );
+      }
+    } catch (err: unknown) {
+      if (
+        err instanceof NotImplementedError || err instanceof InputMissingError
+      ) {
+        this.#reporter(
+          `Day ${this.#filename} - Task 2`,
+          err,
+        );
+      } else {
+        throw err;
+      }
     }
   }
 

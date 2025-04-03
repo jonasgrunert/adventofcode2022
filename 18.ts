@@ -60,7 +60,7 @@ const task = new Solution(
     let count = 0;
     for (const cube of strings) {
       for (const side of sides(
-        cube.split(",").map((n) => Number.parseInt(n)),
+        cube.split(",").map((n) => Number.parseInt(n))
       )) {
         if (outward.has(side)) {
           count++;
@@ -71,10 +71,8 @@ const task = new Solution(
   },
   {
     sep: "\n",
-  },
+  }
 );
 task.expect(64, 58);
-
-if (import.meta.main) await task.execute();
 
 export default task;

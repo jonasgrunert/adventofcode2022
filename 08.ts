@@ -32,11 +32,11 @@ const scenicScore =
         .slice(0, y)
         .map((line) => line[x])
         .reverse(),
-      height,
+      height
     );
     const south = dist(
       trees.slice(y + 1).map((line) => line[x]),
-      height,
+      height
     );
     return [north, west, east, south].reduce((p, c) => p * c);
   };
@@ -65,10 +65,8 @@ const task = new Solution(
   {
     sep: "\n",
     transform: (a) => a.split("").map((n) => Number.parseInt(n)),
-  },
+  }
 );
 task.expect(21, 8);
-
-if (import.meta.main) await task.execute();
 
 export default task;

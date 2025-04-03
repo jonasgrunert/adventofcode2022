@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
-import Solution from "./solution.ts";
+import Solution, { InputMissingError, NotImplementedError } from "./solution.ts";
 
 Object.defineProperty(globalThis, "isTest", {
   value: true,
@@ -20,11 +20,19 @@ for await (const file of Deno.readDir(".")) {
           // deno-lint-ignore no-empty
         } catch {}
       }
-      return Deno.readTextFileSync(`data/${name}_test.txt`);
+      try {
+        return Deno.readTextFileSync(`data/${name}_test.txt`);
+      } catch (err) {
+        throw new InputMissingError("File not readable", { cause: err });
+      }
     };
     sol.reporter = (name, result, expect) =>
-      Deno.test(name, () => {
-        assertEquals(result, expect);
+      Deno.test({
+        name,
+        ignore: result instanceof InputMissingError || result instanceof NotImplementedError,
+        fn: () => {
+          assertEquals(result, expect);
+        },
       });
     sol.execute();
   }

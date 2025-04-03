@@ -14,10 +14,8 @@ const task = new Solution(
         .flatMap((s) => s.split("-"))
         .map((n) => Number.parseInt(n)),
     sep: "\n",
-  },
+  }
 );
 task.expect(2, 4);
-
-if (import.meta.main) await task.execute();
 
 export default task;

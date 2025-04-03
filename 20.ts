@@ -108,10 +108,8 @@ const task = new Solution(
   {
     transform: (n) => new Node(Number.parseInt(n)),
     sep: "\n",
-  },
+  }
 );
 task.expect(3, 1623178306);
-
-if (import.meta.main) await task.execute();
 
 export default task;

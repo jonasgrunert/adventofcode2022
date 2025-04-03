@@ -96,8 +96,8 @@ function fold(coords: Coords) {
   const size = Math.sqrt(
     coords.reduce(
       (p, c) => p + c.reduce((a, b) => a + (b !== undefined ? 1 : 0), 0),
-      0,
-    ) / 6,
+      0
+    ) / 6
   );
   const x = coords[0].findIndex((e) => e === true);
   const start: Face = {
@@ -126,7 +126,7 @@ function fold(coords: Coords) {
             .map((l) => l.slice(nX, nX + size)),
           name,
           neighbours: cubeFaces[name].map(
-            (_, j, all) => all[mod(ix - r + j, moves.length)],
+            (_, j, all) => all[mod(ix - r + j, moves.length)]
           ),
         };
         walk(nF);
@@ -140,7 +140,7 @@ function fold(coords: Coords) {
 function follow(
   faces: Record<Dir, Face>,
   instructions: Directions,
-  size: number,
+  size: number
 ) {
   let curr = {
     x: 0,
@@ -202,18 +202,16 @@ const task = new Solution(
           .map((s) =>
             s
               .split("")
-              .map((s) => ({ " ": undefined, ".": true, "#": false }[s])),
+              .map((s) => ({ " ": undefined, ".": true, "#": false }[s]))
           );
       }
       return [...e.matchAll(dirRegex)].map((n, x) =>
-        x % 2 == 0 ? Number.parseInt(n[1]) : n[1],
+        x % 2 == 0 ? Number.parseInt(n[1]) : n[1]
       );
     },
     sep: "\n\n",
-  },
+  }
 );
 task.expect(6032, 5031);
-
-if (import.meta.main) await task.execute();
 
 export default task;

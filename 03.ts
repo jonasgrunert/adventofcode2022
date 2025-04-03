@@ -47,10 +47,8 @@ const task = new Solution(
   {
     transform: (e) => e.split(""),
     sep: "\n",
-  },
+  }
 );
 task.expect(157, 70);
-
-if (import.meta.main) await task.execute();
 
 export default task;

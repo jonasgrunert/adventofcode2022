@@ -78,10 +78,8 @@ const task = new Solution(
       return { direction, length: Number.parseInt(L) };
     },
     sep: "\n",
-  },
+  }
 );
 task.expect(13, 36);
-
-if (import.meta.main) await task.execute();
 
 export default task;

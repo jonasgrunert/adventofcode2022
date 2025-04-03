@@ -13,7 +13,7 @@ const adj = [
 function predict(
   pos: string,
   positions: Set<string>,
-  round = 0,
+  round = 0
 ): null | string {
   const [x, y] = pos.split(",").map((n) => Number.parseInt(n));
   let shouldMove = false;
@@ -21,7 +21,7 @@ function predict(
   for (let i = 0; i < adj.length; i++) {
     if (
       adj[(i + round) % adj.length].some(([dx, dy]) =>
-        positions.has([dx + x, dy + y].join(",")),
+        positions.has([dx + x, dy + y].join(","))
       )
     ) {
       if (suggestion !== null) return suggestion;
@@ -42,8 +42,8 @@ const task = new Solution(
       arr.flatMap((a, y) =>
         a
           .map((c, x) => (c === "#" ? [x, y].join(",") : null))
-          .filter((c) => c !== null),
-      ) as string[],
+          .filter((c) => c !== null)
+      ) as string[]
     );
     for (let i = 0; i < 10; i++) {
       const predictions = {} as Record<string, string[]>;
@@ -80,7 +80,7 @@ const task = new Solution(
         x2: Number.MIN_SAFE_INTEGER,
         y1: Number.MAX_SAFE_INTEGER,
         y2: Number.MIN_SAFE_INTEGER,
-      },
+      }
     );
     const [dx, dy] = [x2 - x1 + 1, y2 - y1 + 1];
     return dx * dy - elves.size;
@@ -90,8 +90,8 @@ const task = new Solution(
       arr.flatMap((a, y) =>
         a
           .map((c, x) => (c === "#" ? [x, y].join(",") : null))
-          .filter((c) => c !== null),
-      ) as string[],
+          .filter((c) => c !== null)
+      ) as string[]
     );
     let i = 0;
     let moved = true;
@@ -122,10 +122,8 @@ const task = new Solution(
   {
     transform: (e) => e.split(""),
     sep: "\n",
-  },
+  }
 );
 task.expect(110, 20);
-
-if (import.meta.main) await task.execute();
 
 export default task;
