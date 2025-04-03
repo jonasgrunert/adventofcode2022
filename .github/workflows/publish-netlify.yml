@@ -1,0 +1,11 @@
+name: Trigger redeploy on Netlify
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build:
+    name: Trigger build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build
+        run: curl -X POST -d {} ${{ secrets.NETLIFY_BUILD_HOOK }}
